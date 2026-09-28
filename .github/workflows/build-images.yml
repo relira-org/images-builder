@@ -1,0 +1,88 @@
+name: Build images
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag (empty: today, e.g. 2026-09-26)'
+        required: false
+        type: string
+      release:
+        description: 'Publish a release (off: build only, images kept as workflow artifacts)'
+        required: false
+        type: boolean
+        default: true
+  push:
+    tags: ['v*', '20*']
+
+jobs:
+  build:
+    runs-on: ubuntu-26.04-arm
+    strategy:
+      fail-fast: false
+      matrix:
+        distro: [debian_13, ubuntu_24.04]
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Build
+        run: |
+          meta=${{ matrix.distro }}/catalog.json
+
+          name=$(jq -r '"\(.distro | ascii_downcase)_\(.version)"' "$meta")
+          arch=$(jq -r .arch "$meta")
+          case "$arch:$(uname -m)" in arm64:aarch64|aarch64:aarch64) ;;
+            *) echo "$meta says $arch, the runner is $(uname -m)"; exit 1 ;; esac
+
+          NAME="$name" KEYS= bash build.sh ${{ matrix.distro }}
+
+          mkdir dist
+          mv out/"$name".simg.zst dist/
+          jq --arg file "$name.simg.zst" \
+             --arg sha256 "$(sha256sum dist/"$name".simg.zst | cut -d' ' -f1)" \
+             --argjson size "$(stat -c %s dist/"$name".simg.zst)" \
+             '. + {file: $file, sha256: $sha256, size: $size}' \
+             "$meta" > dist/"$name".json
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.distro }}
+          path: dist/
+          compression-level: 0
+          if-no-files-found: error
+
+  release:
+    needs: build
+    if: github.event_name == 'push' || inputs.release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          cd dist
+          tag="${{ github.event_name == 'push' && github.ref_name || inputs.release_tag }}"
+          tag="${tag:-$(date -u +%Y-%m-%d)}"
+          # Order: Ubuntu first, as the app's built-in list has it.
+          jq -s --arg generated "$(date -u +%FT%TZ)" \
+             '{schema: 2, generated: $generated, images: sort_by(.distro != "Ubuntu")}' \
+             *.json > index.json
+          cat index.json
+          {
+            echo "Relira base images built from ${GITHUB_SHA::7}."
+            echo
+            echo "| Image | Download | SHA-256 |"
+            echo "|---|---|---|"
+            jq -r '.images[] | "| \(.distro) \(.version) “\(.codename)” | `\(.file)` (\((.size + 1048575) / 1048576 | floor) MB) | `\(.sha256)` |"' index.json
+          } > notes.md
+          # --latest: the app downloads from releases/latest.
+          gh release create "$tag" --target "$GITHUB_SHA" --title "Images $tag" \
+            --notes-file notes.md --latest index.json *.simg.zst

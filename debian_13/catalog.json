@@ -1,0 +1,11 @@
+{
+    "distro": "Debian",
+    "version": "13",
+    "codename": "trixie",
+    "description": "Debian 13 base image",
+    "tags": [
+        "systemd"
+    ],
+    "arch": "arm64",
+    "default_user": "user"
+}

@@ -1,0 +1,12 @@
+{
+	"distro": "Ubuntu",
+	"version": "24.04",
+	"codename": "noble",
+	"lts": true,
+	"description": "Ubuntu 24.04 base image",
+	"tags": [
+		"systemd"
+	],
+	"arch": "arm64",
+	"default_user": "ubuntu"
+}
