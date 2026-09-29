@@ -35,6 +35,7 @@ locale-gen en_US.UTF-8
 apt-get autoremove -y
 apt-get clean
 rm -rf /var/lib/apt/lists/*
+rm /.dockerenv
 rm /etc/machine-id
 rm /var/lib/dbus/machine-id
 find /var/log -type f -delete
