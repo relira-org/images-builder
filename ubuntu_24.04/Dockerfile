@@ -31,6 +31,7 @@ apt-get install -y --no-install-recommends \
     whiptail
 
 locale-gen en_US.UTF-8
+ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 
 apt-get autoremove -y
 apt-get clean
