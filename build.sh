@@ -29,6 +29,9 @@ mkdir /r
 # --xattrs: file capabilities live in xattrs
 tar -x -p --numeric-owner --xattrs --xattrs-include="*" -C /r
 
+# prevent being detected as a docker container
+rm /r/.dockerenv
+
 echo "rootfs: $(du -sh /r | cut -f1)"
 mkfs.ext4 -q -L relira-root -m 1 -E root_owner=0:0,assume_storage_prezeroed=1 -d /r "/tmp/$NAME.img" "$SIZE"
 e2fsck -fn "/tmp/$NAME.img" >/dev/null 2>&1 || { echo "e2fsck found problems" >&2; exit 1; }

@@ -36,7 +36,6 @@ ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 apt-get autoremove -y
 apt-get clean
 rm -rf /var/lib/apt/lists/*
-rm /.dockerenv
 rm /etc/machine-id
 rm /var/lib/dbus/machine-id
 find /var/log -type f -delete
