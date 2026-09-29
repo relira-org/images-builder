@@ -83,6 +83,12 @@ jobs:
             echo "|---|---|---|"
             jq -r '.images[] | "| \(.distro) \(.version) “\(.codename)” | `\(.file)` (\((.size + 1048575) / 1048576 | floor) MB) | `\(.sha256)` |"' index.json
           } > notes.md
+
+          if gh release view "$tag"; then
+            gh release delete "$tag" -y --cleanup-tag
+            sleep 5
+          fi
+
           # --latest: the app downloads from releases/latest.
           gh release create "$tag" --target "$GITHUB_SHA" --title "Images $tag" \
             --notes-file notes.md --latest index.json *.simg.zst

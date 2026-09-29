@@ -47,8 +47,11 @@ HOSTS
 cat > /r/etc/profile.d/relira-first-login.sh <<'FIRST_LOGIN'
 MARKER="$HOME/.first-login-marker"
 if [ ! -e "$MARKER" ]; then
-    printf '\n%s\n' "rootless sudo is activated for '$(id -un)' user"
-    printf '\n%s\n' "Run this to set password: sudo passwd $(id -un)"
+    [ 0 != "$(id -u)" ] && {
+        printf '\n%s\n' "Passwordless sudo is activated."
+        printf '\n%s\n' "To set password: sudo passwd $(id -un)"
+        echo ''
+    }
     : > "$MARKER"
 fi
 FIRST_LOGIN
