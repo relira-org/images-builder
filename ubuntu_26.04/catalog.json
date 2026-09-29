@@ -1,0 +1,12 @@
+{
+	"distro": "Ubuntu",
+	"version": "26.04",
+	"codename": "resolute",
+	"lts": true,
+	"description": "Ubuntu 26.04 base image",
+	"tags": [
+		"systemd"
+	],
+	"arch": "arm64",
+	"default_user": "ubuntu"
+}

@@ -1,0 +1,11 @@
+{
+    "distro": "Debian",
+    "version": "14",
+    "codename": "forky",
+    "description": "Debian 14 base image",
+    "tags": [
+        "systemd"
+    ],
+    "arch": "arm64",
+    "default_user": "user"
+}

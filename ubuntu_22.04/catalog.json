@@ -1,0 +1,12 @@
+{
+	"distro": "Ubuntu",
+	"version": "22.04",
+	"codename": "jammy",
+	"lts": true,
+	"description": "Ubuntu 22.04 base image",
+	"tags": [
+		"systemd"
+	],
+	"arch": "arm64",
+	"default_user": "ubuntu"
+}

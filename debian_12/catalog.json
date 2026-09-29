@@ -1,0 +1,11 @@
+{
+    "distro": "Debian",
+    "version": "12",
+    "codename": "bookworm",
+    "description": "Debian 12 base image",
+    "tags": [
+        "systemd"
+    ],
+    "arch": "arm64",
+    "default_user": "user"
+}
