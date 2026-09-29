@@ -1,44 +1,44 @@
-# Ubuntu 24.04 LTS (noble) base rootfs for Relira
+# Rocky Linux 9 (Blue Onyx) base rootfs for Relira
 # Copyright (C) 2026 Tieu Long <long025733@gmail.com>
 
-FROM ubuntu:24.04
+FROM rockylinux:9
 
-ARG DEBIAN_FRONTEND=noninteractive
 ENV TERM="xterm-256color"
 
 RUN <<EOF
 set -e
-apt-get update
-apt-get install -y --no-install-recommends \
-    systemd-sysv \
-    udev \
-    kmod \
+dnf -y update
+dnf -y install --nodocs \
+    systemd \
+    systemd-udev \
     dbus \
-    libpam-systemd \
+    iproute \
+    iputils \
+    kmod \
+    procps\
+    util-linux \
     bash-completion \
-    iproute2 \
-    iputils-ping \
-    locales \
-    procps \
-    xz-utils \
-    unzip \
+    glibc-langpack-en \
+    glibc-locale-source \
+    ca-certificates \
+    wget \
+    sudo \
+    passwd \
+    hostname \
     nano \
     less \
-    busybox \
-    ca-certificates \
-    curl \
-    sudo \
-    whiptail
+    unzip \
+    xz \
+    ncurses
 
-locale-gen en_US.UTF-8
+localedef -i en_US -f UTF-8 en_US.UTF-8
 ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 
-apt-get autoremove -y
-apt-get clean
-rm -rf /var/lib/apt/lists/*
+dnf clean all
+rm -rf /var/cache/dnf
 rm /etc/machine-id
-rm /var/lib/dbus/machine-id
 find /var/log -type f -delete
+rm /root/anaconda-ks.cfg /root/original-ks.cfg /root/anaconda-post.log
 EOF
 
 COPY <<EOF /etc/systemd/journald.conf.d/relira.conf
@@ -62,10 +62,10 @@ Name=eth0
 DHCP=yes
 EOF
 
-ARG USERNAME=ubuntu
+ARG USERNAME=rocky
 RUN <<EOF
 set -e
-#useradd -m -u 1000 -s /bin/bash -G sudo $USERNAME
+useradd -m -u 1000 -s /bin/bash -G wheel $USERNAME
 echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME
 EOF
 

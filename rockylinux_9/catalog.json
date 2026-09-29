@@ -1,0 +1,12 @@
+{
+	"distro": "Rocky_Linux",
+	"version": "9",
+	"codename": "Blue_Onyx",
+	"lts": true,
+	"description": "Rocky Linux 9 base image",
+	"tags": [
+		"systemd"
+	],
+	"arch": "arm64",
+	"default_user": "rocky"
+}

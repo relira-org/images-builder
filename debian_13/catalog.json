@@ -7,5 +7,5 @@
         "systemd"
     ],
     "arch": "arm64",
-    "default_user": "user"
+    "default_user": "deb"
 }

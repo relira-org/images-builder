@@ -62,12 +62,13 @@ Name=eth0
 DHCP=yes
 EOF
 
+ARG USERNAME=ubuntu
 RUN <<EOF
 set -e
-#useradd -m -u 1000 -s /bin/bash -G sudo ubuntu
-echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu
+#useradd -m -u 1000 -s /bin/bash -G sudo $USERNAME
+echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME
 EOF
 
-USER ubuntu
-WORKDIR /home/ubuntu
+USER $USERNAME
+WORKDIR /home/$USERNAME
 CMD ["/bin/bash", "-il"]
