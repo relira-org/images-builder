@@ -30,7 +30,16 @@ mkdir /r
 tar -x -p --numeric-owner --xattrs --xattrs-include="*" -C /r
 
 # prevent being detected as a docker container
-rm /r/.dockerenv
+[ -f /r/.dockerenv ] && rm /r/.dockerenv
+
+echo "localhost" >> /r/etc/hostname
+
+cat > /r/etc/hosts <<'EOF'
+127.0.0.1   localhost
+::1         localhost ip6-localhost ip6-loopback
+ff02::1     ip6-allnodes
+ff02::2     ip6-allrouters
+EOF
 
 echo "rootfs: $(du -sh /r | cut -f1)"
 mkfs.ext4 -q -L relira-root -m 1 -E root_owner=0:0,assume_storage_prezeroed=1 -d /r "/tmp/$NAME.img" "$SIZE"
