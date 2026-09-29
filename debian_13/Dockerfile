@@ -20,6 +20,8 @@ apt-get install -y --no-install-recommends \
     iputils-ping \
     locales \
     procps \
+    xz-utils \
+    unzip \
     nano \
     less \
     busybox \
