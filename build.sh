@@ -45,7 +45,7 @@ ff02::2     ip6-allrouters
 HOSTS
 
 cat > /r/etc/profile.d/relira-first-login.sh <<'FIRST_LOGIN'
-MARKER="$HOME/.first-login-marker"
+MARKER="$HOME/.first-login-done"
 if [ ! -e "$MARKER" ]; then
     [ 0 != "$(id -u)" ] && {
         printf '\n%s\n' "Passwordless sudo is activated."

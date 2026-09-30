@@ -65,7 +65,7 @@ EOF
 ARG USERNAME=ubuntu
 RUN <<EOF
 set -e
-#useradd -m -u 1000 -s /bin/bash -G sudo $USERNAME
+useradd -m -u 1000 -s /bin/bash -G sudo $USERNAME
 echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME
 EOF
 
