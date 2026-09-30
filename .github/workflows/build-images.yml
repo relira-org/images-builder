@@ -46,10 +46,10 @@ jobs:
           NAME="$name" KEYS= bash build.sh ${{ matrix.distro }}
 
           mkdir dist
-          mv out/"$name".simg.zst dist/
-          jq --arg file "$name.simg.zst" \
-             --arg sha256 "$(sha256sum dist/"$name".simg.zst | cut -d' ' -f1)" \
-             --argjson size "$(stat -c %s dist/"$name".simg.zst)" \
+          mv out/"$name".tar.zst dist/
+          jq --arg file "$name.tar.zst" \
+             --arg sha256 "$(sha256sum dist/"$name".tar.zst | cut -d' ' -f1)" \
+             --argjson size "$(stat -c %s dist/"$name".tar.zst)" \
              '. + {file: $file, sha256: $sha256, size: $size}' \
              "$meta" > dist/"$name".json
 
@@ -100,4 +100,4 @@ jobs:
 
           # --latest: the app downloads from releases/latest.
           gh release create "$tag" --target "$GITHUB_SHA" --title "Images $tag" \
-            --notes-file notes.md --latest index.json *.simg.zst
+            --notes-file notes.md --latest index.json *.tar.zst
