@@ -1,7 +1,7 @@
-# Rocky Linux 9 (Blue Onyx) base rootfs for Relira
+# Rocky Linux 10 (Red Quartz) base rootfs for Relira
 # Copyright (C) 2026 Tieu Long <long025733@gmail.com>
 
-FROM rockylinux:9
+FROM rockylinux/rockylinux:10
 
 ENV TERM="xterm-256color"
 
@@ -13,10 +13,8 @@ dnf -y install --nodocs --setopt=install_weak_deps=False \
     systemd-udev \
     dbus \
     iproute \
-    iputils \
     kmod \
     procps\
-    util-linux \
     bash-completion \
     glibc-langpack-en \
     glibc-locale-source \
@@ -38,7 +36,6 @@ dnf clean all
 rm -rf /var/cache/dnf
 rm /etc/machine-id
 find /var/log -type f -delete
-rm /root/anaconda-ks.cfg /root/original-ks.cfg /root/anaconda-post.log
 EOF
 
 COPY <<EOF /etc/systemd/journald.conf.d/relira.conf

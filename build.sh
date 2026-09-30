@@ -48,7 +48,7 @@ cat > /r/etc/profile.d/relira-first-login.sh <<'FIRST_LOGIN'
 MARKER="$HOME/.first-login-done"
 if [ ! -e "$MARKER" ]; then
     [ 0 != "$(id -u)" ] && {
-        printf '%s\n' "Passwordless sudo is activated."
+        printf '\n%s\n' "Passwordless sudo is activated."
         printf '%s\n' "To set password: sudo passwd $(id -un)"
         printf '%s\n'
     }

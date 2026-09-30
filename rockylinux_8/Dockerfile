@@ -1,7 +1,7 @@
-# Rocky Linux 9 (Blue Onyx) base rootfs for Relira
+# Rocky Linux 8 (Green Obsidian) base rootfs for Relira
 # Copyright (C) 2026 Tieu Long <long025733@gmail.com>
 
-FROM rockylinux:9
+FROM rockylinux:8
 
 ENV TERM="xterm-256color"
 
@@ -13,16 +13,16 @@ dnf -y install --nodocs --setopt=install_weak_deps=False \
     systemd-udev \
     dbus \
     iproute \
-    iputils \
     kmod \
-    procps\
-    util-linux \
+    procps \
     bash-completion \
     glibc-langpack-en \
     glibc-locale-source \
     ca-certificates \
+    findutils \
     wget \
     sudo \
+    passwd \
     nano \
     unzip \
     xz \

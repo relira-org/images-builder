@@ -21,7 +21,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        distro: [debian_12, debian_13, debian_14, ubuntu_22.04, ubuntu_24.04, ubuntu_26.04, rockylinux_9]
+        distro:
+          - debian_12
+          - debian_13
+          - debian_14
+          - ubuntu_22.04
+          - ubuntu_24.04
+          - ubuntu_26.04
+          - rockylinux_8
+          - rockylinux_9
+          - rockylinux_10
     steps:
       - uses: actions/checkout@v7
 
