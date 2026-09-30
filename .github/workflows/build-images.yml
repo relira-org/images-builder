@@ -82,7 +82,7 @@ jobs:
           tag="${tag:-$(date -u +%Y-%m-%d)}"
           # Order: Ubuntu first, as the app's built-in list has it.
           jq -s --arg generated "$(date -u +%FT%TZ)" \
-             '{schema: 2, generated: $generated, images: sort_by(.distro != "Ubuntu")}' \
+             '{schema: 2, generated: $generated, images: sort_by(.distro, (.version | tonumber))}' \
              *.json > index.json
           cat index.json
           {
