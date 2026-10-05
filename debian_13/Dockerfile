@@ -31,7 +31,8 @@ apt-get install -y --no-install-recommends \
     sudo \
     whiptail
 
-locale-gen en_US.UTF-8
+sed -i 's/^# *\(en_US.UTF-8 UTF-8\)/\1/' /etc/locale.gen
+locale-gen
 
 apt-get autoremove -y
 apt-get clean
@@ -42,6 +43,9 @@ find /var/log -type f -delete
 
 # Let services start automatically after apt install
 rm -f /usr/sbin/policy-rc.d
+
+# Fix apt install bash completion
+rm -f /etc/apt/apt.conf.d/docker-clean
 EOF
 
 COPY <<EOF /etc/systemd/journald.conf.d/relira.conf

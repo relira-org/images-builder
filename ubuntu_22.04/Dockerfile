@@ -43,6 +43,9 @@ find /var/log -type f -delete
 
 # Let services start automatically after apt install
 rm -f /usr/sbin/policy-rc.d
+
+# Fix apt install bash completion
+rm -f /etc/apt/apt.conf.d/docker-clean
 EOF
 
 COPY <<EOF /etc/systemd/journald.conf.d/relira.conf
