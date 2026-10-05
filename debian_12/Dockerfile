@@ -44,8 +44,10 @@ find /var/log -type f -delete
 # Let services start automatically after apt install
 rm -f /usr/sbin/policy-rc.d
 
-# Fix apt install bash completion
-rm -f /etc/apt/apt.conf.d/docker-clean
+# Remove Docker image tweaks so apt, dpkg and services behave like a normal install
+rm -f /etc/apt/apt.conf.d/docker-* \
+    /etc/dpkg/dpkg.cfg.d/docker \
+    /etc/dpkg/dpkg.cfg.d/docker-apt-speedup
 EOF
 
 COPY <<EOF /etc/systemd/journald.conf.d/relira.conf
