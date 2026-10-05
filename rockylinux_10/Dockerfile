@@ -24,6 +24,7 @@ dnf -y install --nodocs --setopt=install_weak_deps=False \
     nano \
     unzip \
     xz \
+    zstd \
     ncurses \
     which \
     file \

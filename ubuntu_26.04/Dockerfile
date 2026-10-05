@@ -22,6 +22,7 @@ apt-get install -y --no-install-recommends \
     procps \
     xz-utils \
     unzip \
+    zstd \
     nano \
     less \
     busybox \
@@ -39,6 +40,9 @@ rm -rf /var/lib/apt/lists/*
 rm /etc/machine-id
 rm /var/lib/dbus/machine-id
 find /var/log -type f -delete
+
+# Let services start automatically after apt install
+rm -f /usr/sbin/policy-rc.d
 EOF
 
 COPY <<EOF /etc/systemd/journald.conf.d/relira.conf
