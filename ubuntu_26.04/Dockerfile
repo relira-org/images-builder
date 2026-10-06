@@ -19,6 +19,7 @@ apt-get install -y --no-install-recommends \
     iproute2 \
     iputils-ping \
     locales \
+    tzdata \
     procps \
     xz-utils \
     unzip \
