@@ -28,6 +28,7 @@ apt-get install -y --no-install-recommends \
     busybox \
     ca-certificates \
     curl \
+    wget \
     sudo \
     whiptail
 
