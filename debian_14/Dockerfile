@@ -55,6 +55,7 @@ COPY <<EOF /etc/systemd/journald.conf.d/relira.conf
 [Journal]
 #Storage=volatile
 RuntimeMaxUse=64M
+SystemMaxUse=64M
 EOF
 
 # Mask unneeded services
