@@ -1,27 +1,33 @@
 #!/usr/bin/env bash
 # Builds a Relira base rootfs: DISTRO/Dockerfile -> rootfs -> out/NAME.tar.zst
-# Usage: ./build.sh debian_13
+# Usage: [ARCH=arm64|amd64] ./build.sh debian_13
+# ARCH defaults to the host's; another one needs Docker able to run it (emulation).
 
 set -euo pipefail
 
 here=$(cd "$(dirname "$0")" && pwd -P)
 DISTRO=$(basename "${1:?usage: $0 DISTRO (a folder with a Dockerfile, e.g. debian_13)}")
 [ -f "$here/$DISTRO/Dockerfile" ] || { echo "no $DISTRO/Dockerfile" >&2; exit 1; }
-NAME="${NAME:-$DISTRO}"
+case "${ARCH:-$(uname -m)}" in
+    arm64|aarch64) ARCH=arm64 ;;
+    amd64|x86_64) ARCH=amd64 ;;
+    *) echo "ARCH must be arm64 or amd64, not ${ARCH:-$(uname -m)}" >&2; exit 1 ;;
+esac
+NAME="${NAME:-${DISTRO}_$ARCH}"
 OUT="$here/out"
 TAG="relira-rootfs:$NAME"
 
-docker build --platform linux/arm64 -t "$TAG" "$here/$DISTRO"
+docker build --platform "linux/$ARCH" -t "$TAG" "$here/$DISTRO"
 
 mkdir -p "$OUT"
 rm -f "$OUT/$NAME.tar" "$OUT/$NAME.tar.zst" "$OUT/$NAME.sha256"
-cid=$(docker create --platform linux/arm64 "$TAG")
+cid=$(docker create --platform "linux/$ARCH" "$TAG")
 trap 'docker rm -f "$cid" >/dev/null' EXIT
 
 # Extracted as root in Linux so ownership and modes survive
 docker export "$cid" > "$OUT/$NAME.tar"
 
-docker run --rm -i --platform linux/arm64 -v "$OUT:/out" \
+docker run --rm -i -v "$OUT:/out" \
     -e DEBIAN_FRONTEND=noninteractive -e NAME="$NAME" -e OWNER="$(id -u):$(id -g)" \
     debian:13-slim bash -euo pipefail -s <<'BUILD'
 apt-get update -qq

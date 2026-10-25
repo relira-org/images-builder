@@ -7,6 +7,5 @@
 	"tags": [
 		"systemd"
 	],
-	"arch": "arm64",
 	"default_user": "rocky"
 }
