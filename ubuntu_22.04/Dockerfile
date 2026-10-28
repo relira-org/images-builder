@@ -18,6 +18,7 @@ apt-get install -y --no-install-recommends \
     bash-completion \
     iproute2 \
     iputils-ping \
+    usbutils \
     locales \
     tzdata \
     procps \

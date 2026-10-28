@@ -13,6 +13,7 @@ dnf -y install --nodocs --setopt=install_weak_deps=False \
     systemd-udev \
     dbus \
     iproute \
+    usbutils \
     kmod \
     procps\
     bash-completion \
