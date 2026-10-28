@@ -65,7 +65,7 @@ echo "rootfs: $(du -sh /r | cut -f1)"
 
 tar -c --numeric-owner --xattrs --xattrs-include='*' --acls \
     --sort=name -C /r . \
-    | zstd -q -19 -T0 -c > "/out/$NAME.tar.zst"
+    | zstd -q --ultra -22 -T0 -c > "/out/$NAME.tar.zst"
 
 chown "$OWNER" "/out/$NAME.tar.zst"
 BUILD
