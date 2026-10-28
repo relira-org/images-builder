@@ -30,6 +30,11 @@ dnf -y install --nodocs --setopt=install_weak_deps=False \
     file \
     lsof
 
+# The base image lacks its packages' file capabilities (newuidmap, arping): set them
+# again, for those packages only (setup's files are read-only bind mounts here)
+f=$(rpm -Va 2>/dev/null | awk 'substr($1, 9, 1) == "P" {print $NF}')
+[ -z "$f" ] || rpm --setcaps $(rpm -qf --qf '%{NAME}\n' $f | sort -u)
+
 localedef -i en_US -f UTF-8 en_US.UTF-8
 ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 
