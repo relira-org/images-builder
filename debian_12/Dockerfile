@@ -67,9 +67,9 @@ systemctl mask \
     watchdog-mux.service
 EOF
 
-COPY <<EOF /etc/systemd/network/ct_eth0.network
+COPY <<EOF /etc/systemd/network/eth0.network
 [Match]
-Name=ct_eth0
+Name=eth0
 
 [Network]
 DHCP=yes
