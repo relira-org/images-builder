@@ -1,0 +1,10 @@
+{
+	"distro": "Fedora",
+	"version": "44",
+	"codename": "",
+	"description": "Fedora 44 base image",
+	"tags": [
+		"systemd"
+	],
+	"default_user": "fedora"
+}

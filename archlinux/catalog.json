@@ -1,0 +1,10 @@
+{
+	"distro": "Arch_Linux",
+	"version": "rolling",
+	"codename": "",
+	"description": "Arch Linux base image, rolling",
+	"tags": [
+		"systemd"
+	],
+	"default_user": "arch"
+}
