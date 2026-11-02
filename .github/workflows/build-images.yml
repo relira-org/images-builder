@@ -35,6 +35,7 @@ jobs:
           - rockylinux_8
           - rockylinux_9
           - rockylinux_10
+          - alpine_3.24
     steps:
       - uses: actions/checkout@v7
 
@@ -94,7 +95,7 @@ jobs:
             echo
             echo "| Image | Arch | Download | SHA-256 |"
             echo "|---|---|---|---|"
-            jq -r '.images[] | "| \(.distro) \(.version) “\(.codename)” | \(.arch) | `\(.file)` (\((.size + 1048575) / 1048576 | floor) MB) | `\(.sha256)` |"' index.json
+            jq -r '.images[] | "| \(.distro) \(.version)\(if .codename != "" then " “\(.codename)”" else "" end) | \(.arch) | `\(.file)` (\((.size + 1048575) / 1048576 | floor) MB) | `\(.sha256)` |"' index.json
           } > notes.md
 
           if gh release view "$tag"; then

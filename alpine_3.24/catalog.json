@@ -1,0 +1,10 @@
+{
+    "distro": "Alpine",
+    "version": "3.24",
+    "codename": "",
+    "description": "Alpine 3.24 base image",
+    "tags": [
+        "openrc"
+    ],
+    "default_user": "alpine"
+}
