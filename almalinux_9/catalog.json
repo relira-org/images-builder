@@ -1,0 +1,11 @@
+{
+	"distro": "AlmaLinux",
+	"version": "9",
+	"codename": "",
+	"lts": true,
+	"description": "AlmaLinux 9 base image",
+	"tags": [
+		"systemd"
+	],
+	"default_user": "alma"
+}

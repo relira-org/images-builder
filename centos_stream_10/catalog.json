@@ -1,0 +1,11 @@
+{
+	"distro": "CentOS_Stream",
+	"version": "10",
+	"codename": "",
+	"lts": true,
+	"description": "CentOS Stream 10 base image",
+	"tags": [
+		"systemd"
+	],
+	"default_user": "centos"
+}

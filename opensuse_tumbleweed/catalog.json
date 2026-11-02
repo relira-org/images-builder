@@ -1,0 +1,10 @@
+{
+	"distro": "openSUSE_Tumbleweed",
+	"version": "rolling",
+	"codename": "",
+	"description": "openSUSE Tumbleweed base image, rolling",
+	"tags": [
+		"systemd"
+	],
+	"default_user": "opensuse"
+}

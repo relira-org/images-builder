@@ -36,6 +36,15 @@ jobs:
           - rockylinux_9
           - rockylinux_10
           - alpine_3.24
+          - almalinux_9
+          - almalinux_10
+          - centos_stream_9
+          - centos_stream_10
+          - fedora_44
+          - fedora_45
+          - opensuse_leap_16.0
+          - opensuse_tumbleweed
+          - archlinux
     steps:
       - uses: actions/checkout@v7
 
@@ -87,7 +96,7 @@ jobs:
           tag="${tag:-$(date -u +%Y-%m-%d)}"
           # Order: by distro and version, each arch's next to the other; the app lists its own.
           jq -s --arg generated "$(date -u +%FT%TZ)" \
-             '{schema: 2, generated: $generated, images: sort_by(.distro, (.version | tonumber), .arch)}' \
+             '{schema: 2, generated: $generated, images: sort_by(.distro, (.version | tonumber? // 0), .arch)}' \
              *.json > index.json
           cat index.json
           {

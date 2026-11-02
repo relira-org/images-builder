@@ -1,0 +1,11 @@
+{
+	"distro": "openSUSE_Leap",
+	"version": "16.0",
+	"codename": "",
+	"lts": true,
+	"description": "openSUSE Leap 16.0 base image",
+	"tags": [
+		"systemd"
+	],
+	"default_user": "opensuse"
+}
