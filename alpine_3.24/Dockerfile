@@ -51,17 +51,10 @@ for s in networking crond; do rc-update add $s default; done
 for s in killprocs savecache; do rc-update add $s shutdown; done
 EOF
 
+# No eth0: Relira gives it its address before boot
 COPY <<EOF /etc/network/interfaces
 auto lo
 iface lo inet loopback
-
-auto eth0
-iface eth0 inet dhcp
-EOF
-
-# The host keeps /etc/resolv.conf
-COPY <<EOF /etc/udhcpc/udhcpc.conf
-RESOLV_CONF="no"
 EOF
 
 # user@host, as the other images; /etc/bash for a bash that is not a login shell

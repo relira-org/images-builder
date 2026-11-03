@@ -67,13 +67,8 @@ systemctl mask \
     watchdog-mux.service
 EOF
 
-COPY <<EOF /etc/systemd/network/eth0.network
-[Match]
-Name=eth0
-
-[Network]
-DHCP=yes
-EOF
+# No eth0.network: Relira gives eth0 its address before boot, and networkd leaves
+# a link no file matches alone.
 
 ARG USERNAME=ubuntu
 RUN <<EOF

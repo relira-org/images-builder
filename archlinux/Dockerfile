@@ -105,13 +105,8 @@ RuntimeMaxUse=64M
 SystemMaxUse=64M
 EOF
 
-COPY <<EOF /etc/systemd/network/eth0.network
-[Match]
-Name=eth0
-
-[Network]
-DHCP=yes
-EOF
+# No eth0.network: Relira gives eth0 its address before boot, and networkd leaves
+# a link no file matches alone.
 
 # Mask unneeded services
 RUN <<EOF

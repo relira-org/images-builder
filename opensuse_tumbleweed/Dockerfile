@@ -62,8 +62,8 @@ SystemMaxUse=64M
 EOF
 
 # eth0 alone: with the host's network, the others are the root's. The host keeps
-# the hostname and /etc/resolv.conf. An address from a router advertisement must
-# not make it assume eth0 is configured: no DHCP then.
+# the hostname and /etc/resolv.conf. Relira gives eth0 its address before boot,
+# which NetworkManager keeps as it is (an external connection): no profile.
 COPY <<EOF /etc/NetworkManager/conf.d/relira.conf
 [main]
 no-auto-default=*
@@ -71,24 +71,8 @@ dns=none
 rc-manager=unmanaged
 hostname-mode=none
 
-[device]
-keep-configuration=no
-
 [keyfile]
 unmanaged-devices=except:interface-name:eth0
-EOF
-
-COPY --chmod=0600 <<EOF /etc/NetworkManager/system-connections/eth0.nmconnection
-[connection]
-id=eth0
-type=ethernet
-interface-name=eth0
-
-[ipv4]
-method=auto
-
-[ipv6]
-method=auto
 EOF
 
 # Mask unneeded services
