@@ -36,6 +36,7 @@ apt-get install -y --no-install-recommends \
 
 sed -i 's/^# *\(en_US.UTF-8 UTF-8\)/\1/' /etc/locale.gen
 locale-gen
+update-locale LANG=en_US.UTF-8
 
 apt-get autoremove -y
 apt-get clean
