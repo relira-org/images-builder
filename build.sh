@@ -28,7 +28,7 @@ trap 'docker rm -f "$cid" >/dev/null' EXIT
 docker export "$cid" > "$OUT/$NAME.tar"
 
 docker run --rm -i -v "$OUT:/out" \
-    -e DEBIAN_FRONTEND=noninteractive -e NAME="$NAME" -e OWNER="$(id -u):$(id -g)" \
+    -e DEBIAN_FRONTEND=noninteractive -e NAME="$NAME" -e DISTRO="$DISTRO" -e OWNER="$(id -u):$(id -g)" \
     debian:13-slim bash -euo pipefail -s <<'BUILD'
 apt-get update -qq
 apt-get install -y -qq --no-install-recommends zstd >/dev/null
@@ -49,12 +49,19 @@ ff02::1     ip6-allnodes
 ff02::2     ip6-allrouters
 HOSTS
 
+# tmux older than 3.8 defaults to mouse off; Relira's wheel and touch scroll need it on
+case "$DISTRO" in
+    fedora_*|opensuse_tumbleweed|archlinux) ;;
+    *) printf '%s\n' '# tmux 3.8 turns mouse on by default; this is for older tmux' \
+           'set -g mouse on' > /r/etc/tmux.conf ;;
+esac
+
 cat > /r/etc/profile.d/relira-first-login.sh <<'FIRST_LOGIN'
 MARKER="$HOME/.first-login-done"
 if [ ! -e "$MARKER" ]; then
     [ 0 != "$(id -u)" ] && {
         printf '\n%s\n' "Passwordless sudo is activated."
-        printf '%s\n' "To set password: sudo passwd $(id -un)"
+        printf '%s\n' "To set password: sudo passwd \$USER"
         printf '%s\n'
     }
     : > "$MARKER"
