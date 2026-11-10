@@ -29,6 +29,7 @@ apt-get install -y --no-install-recommends \
     less \
     busybox \
     ca-certificates \
+    debian-archive-keyring \
     curl \
     wget \
     sudo \
@@ -59,6 +60,27 @@ COPY <<EOF /etc/systemd/journald.conf.d/relira.conf
 #Storage=volatile
 RuntimeMaxUse=64M
 SystemMaxUse=64M
+EOF
+
+# lightdm 1.32 gives its session a VT and a /dev/ttyN, which pam_systemd refuses on a
+# seat without VTs (no logind session, no session bus). 1.33 does not; take it from
+# Debian's forky (Ubuntu has none; its libraries already satisfy the package).
+COPY <<EOF /etc/apt/sources.list.d/forky-lightdm.sources
+Types: deb
+URIs: http://deb.debian.org/debian
+Suites: forky
+Components: main
+Signed-By: /usr/share/keyrings/debian-archive-keyring.pgp
+EOF
+
+COPY <<EOF /etc/apt/preferences.d/forky-lightdm
+Package: *
+Pin: release n=forky
+Pin-Priority: 100
+
+Package: lightdm lightdm-gtk-greeter liblightdm-gobject-1-0
+Pin: release n=forky
+Pin-Priority: 990
 EOF
 
 # Mask unneeded services
